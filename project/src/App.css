@@ -1,20 +1,38 @@
 .App {
   text-align: center;
 }
-body{
+
+#body {
   direction: rtl;
+  /* background-image:url("Img/Leonardo_Diffusion_XL_Chocolate_cake_is_especially_crazy_0.jpg") ; */
+  /* background-image: linear-gradient(to right ,white,rgb(249, 233, 192),rgb(250, 226, 165)); */
+  background-size: 100% 130%;
+  width: 100%;
+  height: 100vh;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  display: flex;
+  justify-content: center;
 }
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#body1{
+ width: 80%;
 }
+#form{
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  margin-top: 70PX;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
 }
-
+#card {
+  border: 1px solid;
+  border-color: rgb(212, 210, 210);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 30px;
+}
+h1{
+  align-items: center;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -25,16 +43,36 @@ body{
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.recipe_img{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#colum{
+  display: flex;
+  flex-wrap: wrap;
+}
+#header {
+  position: fixed;
+  z-index: 5;
+  background-color: white;
+  width: 100%;
+  height: 42PX;
+}
+#button{
+  margin: 5px;
+  background-color: white;
+}
+#button:hover{
+ color: #ff8080;
+ border-radius: 0PX;
+ border-bottom: 2px solid #ff8080;
+}
+#form{
+  margin-top: 100px;
+  width: fit-content;
+}
+.r{
+  /* padding-right: 10px; */
+  text-align: center;
 }

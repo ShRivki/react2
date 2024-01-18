@@ -2,74 +2,101 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useLocation } from "react-router-dom"
-import axios from "axios"
 import { useDispatch } from "react-redux"
-import * as actiontype from '../Store/actions'
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Button, Divider, Form, FormField, Header } from 'semantic-ui-react';
+import { signIn,logIn } from "../services/userService"
 
 const schema = yup
   .object({
-    Name: yup.string().required(),
-    Phone: yup.string().required(),
-    Email: yup.string().email().required(),
-    Tz: yup.string().required().min(9).max(9).required(),
-    Username: yup.string().required(),
-    Password: yup.string().required().min(3),
+    Name: yup.string().required('שדה חובה'),
+    Phone: yup.string().required('שדה חובה').min(9, 'לפחות 9 ספרות ').max(10, '  עד 10 ספרות '),
+    Email: yup.string().required('שדה חובה').email('המייל אינו חוקי'),
+    Tz: yup.string().required('שדה חובה').min(9, ' 9 ספרות ').max(9, '9 ספרות '),
+    Username: yup.string().required('שדה חובה'),
+    Password: yup.string().required('שדה חובה').min(3, 'סיסמא חייבת להכיל לפחות 3 ספרות'),
   })
   .required()
 
 
 export default function App() {
-  const navigate=useNavigate()
-  const dispach=useDispatch()
-  const {state}=useLocation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { state } = useLocation()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),})
+    resolver: yupResolver(schema),
+    defaultValues: {
+      Username: state?.Username,
+      Password: state?.Password,
+    },
+  })
   let d;
   const onSubmit = (data) => {
-    axios.post("http://localhost:8080/api/user/sighin", data)
-      .then((data) => {
-        d = data.data
-        dispach({ type: actiontype.LOG_IN, UserId: d.Id })       
-        navigate("/");
-        alert(d.Name + `שלום ל `);
-      }).catch(() => {      
-        navigate('/Login');
-        alert("הינך רשום במערכת !!!!!");
-      });
+    dispatch(signIn(data,navigate))
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Name:</label><br/>
-      <input placeholder="enter Name"{...register("Name")} />
-      <p>{errors.Name?.message}</p>
-
-      <label>Phone:</label><br/>
-      <input placeholder="enter your Phone" {...register("Phone")} />
-      <p>{errors.Phone?.message}</p>
-
-      <label>Email:</label><br/>
-      <input placeholder="enter your Email"{...register("Email")} />
-      <p>{errors.Email?.message}</p>
-
-      <label>Tz:</label><br/>
-      <input placeholder="enter your Tz" {...register("Tz")} />
-      <p>{errors.Tz?.message}</p> 
-
-      <label>Username:</label><br/>
-      <input placeholder="enter user name"{...register("Username")} value={state?.Username} />
-      <p>{errors.Username?.message}</p>
-
-      <label>Password:</label><br/>
-      <input type="password"
-       placeholder="enter password"{...register("Password")} value={state?.Password} />
-      <p color="">{errors.Password?.message}</p>
-
-      <button type="submit">הרשמה</button> 
-    </form>
+    <div id="form" class="ui placeholder segment">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div class="ui one column very relaxed stackable grid">
+          <div class="column">
+            <div class="ui form">
+              <div class="field">
+                <label>שם משתמש:</label>
+                <div class="ui rigth icon input">
+                  <input placeholder="הכנס שם משתמש"{...register("Username")} />
+                  <i class="user icon"></i>
+                </div>
+                {errors.Username && <p class="ui pointing red basic label">{errors.Username?.message}</p>}
+              </div>
+              <div class="field">
+                <label>סיסמא:</label>
+                <div class="ui rigth icon input">
+                  <input type="password" placeholder="הכנס סיסמא" {...register("Password")} />
+                  <i class="lock icon"></i>
+                </div>
+                {errors.Password && <p class="ui pointing red basic label">{errors.Password?.message}</p>}
+              </div>
+              <div class="field">
+                <label>שם:</label>
+                <div class="ui rigth icon input">
+                  <input placeholder="הכנס שם"{...register("Name")} />
+                  <i class="user icon"></i>
+                </div>
+                {errors.Name && <p class="ui pointing red basic label">{errors.Name?.message}</p>}
+              </div>
+              <div class="field">
+                <label>טלפון:</label>
+                <div class="ui rigth icon input">
+                  <input placeholder="הכנס טלפון" {...register("Phone")} />
+                  <i class="phone icon"></i>
+                </div>
+                {errors.Phone && <p class="ui pointing red basic label">{errors.Phone?.message}</p>}
+              </div>
+              <div class="field">
+                <label>מייל:</label>
+                <div class="ui rigth icon input">
+                  <input placeholder="הכנס מייל"{...register("Email")} />
+                  <i class="mail icon"></i>
+                </div>
+                {errors.Email && <p class="ui pointing red basic label">{errors.Email?.message}</p>}
+              </div>
+              <div class="field">
+                <label>מספר תעודת זהות:</label>
+                <div class="ui rigth icon input">
+                  <input placeholder="הכנס מספר תעודת זהות" {...register("Tz")} />
+                  <i class="lock icon"></i>
+                </div>
+                {errors.Tz && <p class="ui pointing red basic label">{errors.Tz?.message}</p>}
+              </div>
+              <Button class="ui blue submit button" type="submit">הרשמה</Button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   )
 }

@@ -1,31 +1,105 @@
-
-.recipy{
- background-color:#322514;   
-    background-color:#fbcbc9 ;
+.recipe {
+    margin: 50px;
+    background-color: #ffffff4e;
     width: 380px;
     height: fit-content;
-    border-radius: 7.5px;
-}
-#categories{background-color:#e75874;border-radius: 0.5px;  width: max-content; text-align: right;}
-.but{
-    background-color:#f6dbda ;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    color:black ;
-    margin: 2px;
+   /* border: 1px black solid; */
 
 }
-#recipes{
-    color:#322514 ;
-    font-weight: 700 ;
+
+#categories {
+    border-radius: 0.5px;
+    width: max-content;
+    text-align: right;
+}
+
+.but {
+    background-color:#aaa8a833;
+    height: 50px;
+    width: 50px;
+    /* border-radius: 50%; */
+    color: black;
+    margin: 2px;
+    border: 0ch;
+}
+
+.titel_img {
+    position: absolute;
+    font-size: 25px;
+    color: rgb(12, 9, 6);
+    background-color: rgba(255, 255, 255, 0.632);
+    width: 100%;
+    text-align: center;
+    top: 0px;
+    margin-top: 50px;
+}
+
+.Enlarged_image {
+    position: sticky;
+    justify-items: center;
+    overflow: hidden;
+    margin: 20PX 20px 5PX;
+    width: fit-content;
+    border: 1px transparent;
+    /* border-radius: 51px 0 51px 0; */
+}
+
+.Enlarged_image:hover .Enlarged_image_img {
+    transform: scale(1.133);
+}
+
+.Enlarged_image_img {
+    width: 300px;
+    height: 300px;
+    /* position: relative; */
+    transition: all 0.4s;
+    z-index: -1;
+}
+
+#recipes {
+
+    font-weight: 700;
     font-size: xx-large;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-.b{ height: 20px;  width: 20px;
+
+.b {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(240, 255, 240, 0);
+    border-radius: 0px;
+}
+
+.a {
+    display: flex;
+}
+
+.select {
+    color: #000000;
+    margin-top: 70px;
+    margin-left: 30px;
+}
+
+#select {
+    display: flex;
+
+}
+
+#recipe_card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#flex {
     display: flex;
     justify-content: center;
 }
-.a{
-    display: flex;
-}
+
+/* #button{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+} */

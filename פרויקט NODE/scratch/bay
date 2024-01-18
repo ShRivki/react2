@@ -1,1 +1,1 @@
-[{"Name":"קמח","Id":2,"UserId":1,"Count":7},{"Name":"בייצים","Id":3,"UserId":1,"Count":14},{"Name":"חלב","Id":4,"UserId":1,"Count":6},{"Name":"סוכר","Id":5,"UserId":1,"Count":5},{"Name":"חמאה","Id":6,"UserId":1,"Count":1},{"Name":"ביצים","Id":7,"UserId":1,"Count":1},{"Name":"חמאה","Id":8,"UserId":7,"Count":3},{"Name":"סוכר","Id":9,"UserId":7,"Count":2}]
+[{"Id":4,"Name":"קמח","UserId":2,"Count":8}]

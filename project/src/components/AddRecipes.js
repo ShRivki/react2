@@ -2,18 +2,21 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useLocation } from "react-router-dom"
-import axios from "axios"
+import { getCategories } from "../services/categoryService";
 import { useDispatch, useSelector } from "react-redux"
-import * as actiontype from '../Store/actions'
 import { useState, useEffect } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import { Button, Divider, Form, FormField, Header } from 'semantic-ui-react';
+import { addCategory } from '../services/categoryService'
+import { editRecipe, addRecipe } from '../services/recipeService'
+import '../App.css'
 const schema = yup
     .object({
-        Name: yup.string().required("הכנס ערך"),
-        CategoryId: yup.number("מספר בלבד").required("הכנס ערך"),
-        Img: yup.string().required("הכנס ערך"),
-        Duration: yup.number("מספר בלבד").required("הכנס ערך"),
-        Difficulty: yup.number("מספר בלבד").required("הכנס ערך"),
+        Name: yup.string().required('שדה חובה'),
+        CategoryId: yup.number('מספר בלבד').required('שדה חובה'),
+        Img: yup.string().required('שדה חובה'),
+        Duration: yup.number('מספר בלבד').required('שדה חובה'),
+        Difficulty: yup.number('מספר בלבד').required('שדה חובה'),
         Description: yup.string(),
         Ingrident: yup.array().of(yup.object().shape({
             Name: yup.string().nullable(),
@@ -23,21 +26,24 @@ const schema = yup
         ),
         Instructions: yup.array(yup.string().nullable())
     })
-const Input = ({ register, errors, label, name, placeholder }) => {
-    return <>
-        <label>{label}</label><br />
-        <input placeholder={placeholder} {...register({ name })} /><br />
-        <p>{errors[name]?.message}</p>
-    </>
-};
 export default () => {
+    const navigate = useNavigate();
     const { state } = useLocation()
-    const { user } = useSelector(state => ({ user: state.userId }));
-    const dispach = useDispatch();
+    // const { user } = useSelector(state => ({ 
+    //     // user: state.userId
+    //     user: state.user.user
+    //  }));
+    const { user, recipes, categories } = useSelector(state => ({
+        user: state.user.user,
+        categories: state.categories.categories,
+        recipes: state.recipes.recipes
+        // allRecipes: state.recipes
+    }));
+    const dispatch = useDispatch();
     const onSubmit = (data) => {
         const recipe = { UserId: user, ...data, Id: state?.Id };
-        state !== null && dispach({ type: actiontype.EDIT_RECIPE, add: recipe }) || dispach({ type: actiontype.ADD_RECIPE, add: recipe }) ||
-            console.log("אני פהההה")
+        state !== null && dispatch(editRecipe((recipe))) || state == null && dispatch(addRecipe(recipe));
+        navigate('/Recipes');
     }
     const {
         register,
@@ -65,83 +71,125 @@ export default () => {
         control,
         name: "Instructions",
     });
-    const [categories, SetCategories] = useState([" "]);
     const [category, SetCategory] = useState("");
     useEffect(() => {
-
-        axios.get("http://localhost:8080/api/category")
-            .then((data) => {
-                SetCategories(data.data);
-            });
+        dispatch(getCategories());
     }, [category]);
     return <>
-        <input type="text" name="category" onChange={(event) => {
-            SetCategory(event.target.value)
-        }} />
-        <button onClick={() => {
-            axios.post("http://localhost:8080/api/category", {Name:category})
-                .then((data) => {
-                    alert(category + `נוספה לרשימת קטגוריה`)
-                    SetCategory(" ")
-                }).catch((data) => {
-                    alert("ההוספה נכשלה")
-                });
-        }}>הוסף קטגוריה</button><br />
+        <div id="form">
+            <input type="text" placeholder="הכנס קטגוריה" name="category" onChange={(event) => {
+                SetCategory(event.target.value)
+            }} />
+            <Button onClick={() => {
+                // alert(category)
+                dispatch(addCategory(category));
+                //SetCategory(" ")
+            }}>הוסף קטגוריה</Button>
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <br />
-            {/* <Input name="Name" errors={errors} register={register} label="שם עוגה:" placeholder="enter name of cake"/> */}
-            <label>שם עוגה:</label><br />
-            <input placeholder="enter Name"{...register("Name")} />
-            <p>{errors.Name?.message}</p>
-            <label>קטגוריה:</label><br />
-            <select id="categories" {...register("CategoryId")}>
-                {categories.map((x) =>
-                    <option value={x.Id}>{x.Name}</option>)}
-            </select>
-            <br />
-            {/* <Input name="Img" errors={errors} register={register}label="קישור לתמונה:" /> */}
-            <label>קישור לתמונה:</label><br />
-            <input placeholder="enter  url of your Img"{...register("Img")} />
-            <p>{errors.Img?.message}</p>
-            <label>רמת קושי:</label><br />
-            <select id="Difficulty" {...register("Difficulty")}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>
-            {/* <Input Name="Duration" errors={errors} register={register}label="משך זמן בדקות:" placeholder="enter your duration" /> */}
-            <p>{errors.Difficulty?.message}</p>
-            <label>משך זמן בדקות:</label><br />
-            <input placeholder="enter your duration"{...register("Duration")} />
-            <p>{errors.Duration?.message}</p>
-            {/* <Input Name="Description" errors={errors} register={register}label="תאור קצר:" placeholder="enter your Difficulty"/> */}
-            <label>תאור קצר:</label><br />
-            <input placeholder="enter your Difficulty"{...register("Description")} />
-            <p>{errors.Description?.message}</p>
-            {fields.map((x, i) =>
-                <div>
-                    <label>שם מוצר:</label><br />
-                    <input placeholder="הכנס שם מוצר"  {...register(`Ingrident[${i}].Name`)} /><br />
-                    <label>כמות:</label><br />
-                    <input placeholder="הכנס כמות"  {...register(`Ingrident[${i}].Count`)} /><br />
-                    <label>סוג:</label><br />
-                    <input placeholder="Type"  {...register(`Ingrident[${i}].Type`)} /><br />
-                    {/* <Input  name={`Ingrident.${i}.Name`} label="שם מוצר:"  placeholder="הכנס שם מוצר" register={`Ingrident.${i}.Name`} errors={errors}/> */}
-                    {/* <Input name={`Ingrident.${i}.Count`} label="סוג:"  placeholder="Type" register={`Ingrident.${i}.Type`} errors={errors.Ingrident?.[i]?.errors}/> */}
-                    {/* <input name={`Ingrident.${i}.Type`}  type="text" placeholder="Type" {...required(`Ingrident.${i}.Type`)}/><br /> */}
+        <div id="form" class="ui placeholder segment">
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div class="ui one column very relaxed stackable grid">
+                    <div class="column">
+                        <div class="ui form">
+                            <div>
+                                <div class="field">
+                                    <label>שם עוגה:</label>
+                                    <div class="ui rigth icon input">
+                                        <input placeholder="שם עוגה"{...register("Name")} />
+                                        <i class="user icon"></i>
+                                    </div>
+                                    {errors.Name && <p class="ui pointing red basic label">{errors.Name?.message}</p>}
+                                </div>
+
+                                <div class="field">
+                                    <label>קטגוריה:</label>
+                                    <select id="categories" {...register("CategoryId")}>
+                                        {categories.map((x) =>
+                                            <option value={x.Id}>{x.Name}</option>)}
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>קישור לתמונה:</label>
+                                    <div class="ui rigth icon input">
+                                        <input placeholder="הכנס קישור לתמונה"{...register("Img")} />
+                                        <i class="linkify icon"></i>
+                                    </div>
+                                    {errors.Img && <p class="ui pointing red basic label">{errors.Img?.message}</p>}
+                                </div>
+                                <div class="field">
+                                    <label>רמת קושי:</label>
+                                    <select id="Difficulty" {...register("Difficulty")}>
+                                        <option value="1">קל</option>
+                                        <option value="2">בנוני</option>
+                                        <option value="3">קשה</option>
+                                    </select>
+                                    {errors.Difficulty && <p class="ui pointing red basic label">{errors.Difficulty?.message}</p>}
+                                </div>
+                                <div class="field">
+                                    <label>משך זמן הכנה בדקות:</label>
+                                    <div class="ui rigth icon input">
+                                        <input placeholder="הכנס משך זמן הכנה"{...register("Duration")} />
+                                        <i class="phone icon"></i>
+                                    </div>
+                                    {errors.Duration && <p class="ui pointing red basic label">{errors.Duration?.message}</p>}
+                                </div>
+                                <div class="field">
+                                    {/* <Input Name="Description" errors={errors} register={register}label="תאור קצר:" placeholder="enter your Difficulty"/> */}
+                                    <label>תאור קצר:</label>
+                                    <div class="ui rigth icon input">
+                                        <input placeholder="תאור קצר על המתכון"{...register("Description")} />
+                                        <i class="mail icon"></i>
+                                    </div>
+                                    {errors.Description && <p class="ui pointing red basic label">{errors.Description?.message}</p>}
+                                </div>
+                            </div>
+                            <div>
+                                <h2>מוצרים:</h2>
+                                {fields.map((x, i) =>
+                                    <div id="card">
+                                        <div class="field">
+                                            <label>{i + 1} שם מוצר :</label>
+                                            <div class="ui rigth icon input">
+                                                <input placeholder="הכנס שם מוצר"  {...register(`Ingrident[${i}].Name`)} />
+                                                <i class="mail icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>כמות:</label>
+                                            <div class="ui rigth icon input">
+                                                <input placeholder="הכנס כמות"  {...register(`Ingrident[${i}].Count`)} />
+                                                <i class="mail icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>סוג:</label>
+                                            <div class="ui rigth icon input">
+                                                <input placeholder="Type"  {...register(`Ingrident[${i}].Type`)} />
+                                                <i class=" icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>, <br />
+                                )} <Button onClick={(e) => { e.preventDefault(); append({}) }}>הוספת מוצר</Button>
+                                <h2>הוראות:</h2>
+                                <div id="card">
+                                    {fieldsInstructions.map((x, i) =>
+                                        <div class="field">
+                                            <label>הוראה: {i + 1}</label>
+                                            <div class="ui rigth icon input">
+                                                <input placeholder="הכנס הוראה" {...register(`Instructions[${i}]`)} />
+                                                <i class="edit icon"></i>
+                                            </div>
+                                        </div>
+                                    )} <Button onClick={(e) => { e.preventDefault(); appendInstructions(" ") }}>הוספת הוראה  </Button>
+                                </div><br />
+                            </div>
+                            <Button type="submit">שמירת מתכון</Button>
+                        </div>
+                    </div>
                 </div>
-            )} <button onClick={(e) => { e.preventDefault(); append({}) }}>הוספת מוצר</button>
-            {fieldsInstructions.map((x, i) =>
-                <div>
-                    <label>הוראה:</label><br />
-                    <input placeholder="הכנס הוראה" {...register(`Instructions[${i}]`)} /><br />
-                </div>
-            )} <button onClick={(e) => { e.preventDefault(); appendInstructions({}) }}>הוספת הוראה  </button>
-            <br />
-            <button type="submit">שמירת מתכון</button>
-        </form >
+            </form >
+        </div>
 
     </>
-
 }
