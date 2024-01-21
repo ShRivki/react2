@@ -3,9 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useLocation } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { Button, Divider, Form, FormField, Header } from 'semantic-ui-react';
-import { signIn,logIn } from "../services/userService"
+import {useNavigate } from "react-router-dom";
+import { Button } from 'semantic-ui-react';
+import { signIn } from "../../services/userService"
 
 const schema = yup
   .object({
@@ -36,12 +36,12 @@ export default function App() {
   })
   let d;
   const onSubmit = (data) => {
-    dispatch(signIn(data,navigate))
+    dispatch(signIn(data, navigate))
   }
-  return (
+  return (<div id="container">
     <div id="form" class="ui placeholder segment">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="ui one column very relaxed stackable grid">
+        <div   class="ui one column very relaxed stackable grid">
           <div class="column">
             <div class="ui form">
               <div class="field">
@@ -98,5 +98,6 @@ export default function App() {
         </div>
       </form>
     </div>
+  </div>
   )
 }

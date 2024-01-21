@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import * as actionType from '../Store/actions'
 import Swal from "sweetalert2";
 export const logIn = (data, navigate) => {

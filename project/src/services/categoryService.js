@@ -1,4 +1,4 @@
-import axios, { all } from "axios";
+import axios from "axios";
 import Swal from "sweetalert2"
 import * as actiontype from '../Store/actions'
 export const getCategories = () => {

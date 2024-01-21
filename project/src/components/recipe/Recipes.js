@@ -1,12 +1,12 @@
 
 import { useState, useEffect } from "react";
-import '../styles/Recipes.css'
+import '../../styles/Recipes.css'
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { Button, Divider, Form, FormField, Header } from 'semantic-ui-react';
-import { getCategories } from '../services/categoryService'
-import { getRecipes } from '../services/recipeService'
+import { Button } from 'semantic-ui-react';
+import { getCategories } from '../../services/categoryService'
+import { getRecipes } from '../../services/recipeService'
 export default () => {
   const { state } = useLocation();
   const { user, recipes, categories } = useSelector(state => ({
@@ -34,7 +34,7 @@ export default () => {
         <img src={recipe.Img} class="Enlarged_image_img " />
       </div>
       <div></div>
-       <Button onClick={() => {
+       <Button id="torecipe"onClick={() => {
         navigate("/RecipeDetails", { state: recipe });
       }}>למתכון</Button>
     </div>
@@ -72,7 +72,7 @@ export default () => {
       </div>
     </div>
 
-    <h1 id="recipes"> -מתכונים- </h1>
+    <div id="taitel" class="ui horizontal divider header ">מתכונים </div>
     <div class="ui special cards">
       {!state ? recipes?.map((recipe) =>
         category == null || (category == "0" || recipe.CategoryId == category) && (recipe.Difficulty == difficulty || difficulty == "0") && recipe.Duration <= duration &&

@@ -7,7 +7,6 @@ export const getShoppingList = (user) => {
 
             }).catch(err => console.log(err))
 }
-
 export const deleteProduct = (product) => {
     return dispatch => axios.post(`http://localhost:8080/api/bay/delete/${product.Id}`)
         .then(() => {

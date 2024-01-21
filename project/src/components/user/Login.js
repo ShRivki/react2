@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { Button, Divider, Form, FormField, Header } from 'semantic-ui-react';
-import {logIn} from '../services/userService'
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from 'semantic-ui-react';
+import {logIn} from '../../services/userService'
+import '../../App'
 const schema = yup
   .object({
     Username: yup.string().required('שדה חובה'),
@@ -24,35 +25,12 @@ export default function App() {
   // let d;
   const onSubmit = (data) => {
    dispatch(logIn(data,navigate)) ;
-    // axios.post("http://localhost:8080/api/user/login", data)
-    //   .then((data) => {
-    //     d = data.data
-    //     console.log(d)
-    //     dispach(se(d.Id));
-    //     navigate("/");
-    //     // alert(d.Name + `שלום ל `);
-    //     Swal.fire({
-    //       position: "top",
-    //       title: d.Name + `שלום ל `,
-    //       showConfirmButton: false,
-    //       timer: 1500
-    //     })
-    //   }).catch(() => {
-    //     navigate("/SignIn", { state: data });
-    //     alert(`אינך רשום במערכת `);
-    //     Swal.fire({
-    //       position: "top",
-    //       title: ` אינך רשום במערכת  `,
-    //       showConfirmButton: false,
-    //       timer: 1500
-    //     })
-
-    //   });
+   
   };
-  return <>
+  return<> <div id="container">
   <div id="form" class="ui placeholder segment">
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div class="ui one column very relaxed stackable grid">
+      <div  class="ui one column very relaxed stackable grid">
         <div class="column">
           <div class="ui form">
             <div class="field">
@@ -78,28 +56,10 @@ export default function App() {
       </div>
     </form>
   </div>
-    <Link to='/SignIn'> -אינך רשום??? לחץ להרשמה- </Link>
+    
+  </div>
+  <div id="container">
+  <Link to='/SignIn' style={{color:"rgb(179 64 119)"}}> -אינך רשום??? לחץ להרשמה- </Link>
+  </div>
   </>
 }
-
-
-{/* 
-        <Form  >
-          <FormField>
-            <label>Username:</label>
-            <input placeholder="enter user name"{...register("Username")} />
-            <p>{errors.Username?.message}</p>
-          </FormField>
-          <FormField >
-            <label>Password:</label>
-            <input type="password" placeholder="enter password"{...register("Password")} />
-            <p>{errors.Password?.message}</p>
-          </FormField>
-        </Form>
-        <br /> */}
-
-{/* <br />
-        <br />
-        <Button type="submit">התחברות</Button >
-      </form>
-    </div> */}

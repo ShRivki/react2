@@ -1,28 +1,55 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#logo {
+  background-image: url('Img/logo2.png');
+  width: 200px;
+  background-size: 100%;
+  height: 42px;
+  text-align: left;
+  background-color: #ffffff00;
+  border: 0px;
+  
+}
+#logo:hover{
+  background-color: #ffffff00;;
 }
 
 #body {
+  /* color: #e3ae8a; */
+  background-image: url("Img/wwwwww.png");
   direction: rtl;
   /* background-image:url("Img/Leonardo_Diffusion_XL_Chocolate_cake_is_especially_crazy_0.jpg") ; */
   /* background-image: linear-gradient(to right ,white,rgb(249, 233, 192),rgb(250, 226, 165)); */
-  background-size: 100% 130%;
+  background-size: 100%;
+  background-attachment: fixed;
   width: 100%;
   height: 100vh;
   font-family: Georgia, 'Times New Roman', Times, serif;
   display: flex;
   justify-content: center;
+  font-style: italic;
 }
-#body1{
- width: 80%;
+
+label {}
+
+#body1 {
+  width: 80%;
+  /* background-attachment: fixed;
+ background-color: rgba(255, 255, 255, 0.274); */
 }
-#form{
+
+#form {
 
   margin-top: 70PX;
   display: flex;
   flex-wrap: wrap;
   /* justify-content: center; */
 }
+
 #card {
   border: 1px solid;
   border-color: rgb(212, 210, 210);
@@ -30,9 +57,11 @@
   border-radius: 10px;
   margin: 30px;
 }
-h1{
+
+h1 {
   align-items: center;
 }
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -43,36 +72,91 @@ h1{
   font-size: calc(10px + 2vmin);
   color: white;
 }
-.recipe_img{
+
+.recipe_img {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#colum{
+
+#colum {
   display: flex;
   flex-wrap: wrap;
 }
+
 #header {
+  padding-right: 50px;
+  direction: rtl;
   position: fixed;
   z-index: 5;
-  background-color: white;
+  /* background-color:black; */
+  /* background-image: url("Img/yyyy.jpg"); */
+  background-size: 100%;
   width: 100%;
   height: 42PX;
 }
-#button{
+
+#button {
+  font-family: Georgia, 'Times New Roman', Times, serif;
   margin: 5px;
-  background-color: white;
+  color: #ec3138;
+  background-color: rgba(245, 245, 220, 0);
 }
-#button:hover{
- color: #ff8080;
- border-radius: 0PX;
- border-bottom: 2px solid #ff8080;
+
+#button:hover {
+
+  border-radius: 0PX;
+  border-bottom: 2px solid #ec3138;
 }
-#form{
+
+#form {
   margin-top: 100px;
   width: fit-content;
+  background-color: rgba(255, 255, 255, 0.644);
 }
-.r{
+
+#r {
   /* padding-right: 10px; */
   text-align: center;
+
+}
+
+h1 {
+  text-align: center;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+}
+
+.ui.table:last-child {
+  background-color: rgba(249, 247, 247, 0.752);
+}
+
+#taitel {
+  font-size: 100px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+#ui {
+  background-color: rgba(252, 252, 252, 0.559);
+}
+
+#about {
+  margin-top: 100px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 40px;
+  line-height: 50px;
+  text-align: center;
+}
+#torecipe{
+  /* background-color:rgb(236 49 56); */
+  color:  #ec3138;
+  border: #ec3138 2px solid;
+}
+#torecipe:hover{
+  background-color: #ec3138;
+  color: #e0e1e2;
 }
